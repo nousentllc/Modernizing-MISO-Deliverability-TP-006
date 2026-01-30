@@ -1,5 +1,5 @@
 \documentclass[11pt]{article}
-\usepackage[margin=1in]{geometry}
+\usepackage[margin=0.8in]{geometry}
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage[hypcap=false]{caption}
@@ -8,14 +8,17 @@
 \usepackage{tikz-cd}
 \usepackage{multicol}
 \usepackage{fancyhdr}
-\usepackage{xcolor}
+\usepackage[table]{xcolor}
 \usepackage{titlesec}
 \usepackage{tocloft}
 \usepackage{microtype}
+\usepackage{tabularx}
+\usepackage{booktabs}
 \usepackage[colorlinks=true]{hyperref}
 
 \definecolor{TOCBlue}{HTML}{1F4E79}
 \definecolor{SectionBlue}{HTML}{4F81BD}
+\definecolor{techgray}{gray}{0.90}
 
 \hypersetup{
   linkcolor=TOCBlue,
@@ -30,7 +33,7 @@
 \DeclareRobustCommand{\*}{\ast}
 
 % Reduce/suppress minor overfull/underfull \hbox warnings
-\setlength{\emergencystretch}{3em}
+\setlength{\emergencystretch}{6em}
 \hbadness=10000
 \hfuzz=25pt
 \tolerance=2000
@@ -297,6 +300,29 @@ TP-006 isolates the \emph{interface operator} between these modules: converting 
 that matches portfolio physics. When rights remain unit-bound while physics is portfolio-bound, the market
 produces ``paper MW''—accredited in planning constructs but not reliably producible at the constrained nodes.
 
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[
+  box/.style={draw, rounded corners, align=center, inner sep=6pt},
+  arrow/.style={-{Latex[length=3mm]}, thick}
+]
+\node[box] (rel) {Reliability Module\\(Accreditation: ELCC/UCAP/NQC)};
+\node[box, right=18mm of rel] (tx) {Transmission Module\\(Deliverability rights: NRIS/CIR/FCDS)};
+\node[box, below=14mm of $(rel)!0.5!(tx)$] (head) {Usable Headroom\\$\text{Accredited Capability} \times \text{Deliverability Rights}$};
+
+\draw[arrow] (rel) -- (head);
+\draw[arrow] (tx) -- (head);
+
+\node[box, below=12mm of head, text width=0.78\linewidth] (seam)
+{Seam problem (TP-006): physics is portfolio-bound at the POI, but rights/scheduling are often unit-bound.
+Rule changes create an ownership-agnostic portfolio interface contract.};
+
+\draw[arrow] (head) -- (seam);
+\end{tikzpicture}
+\caption{TP-006 as a UEVF interface problem: converting accredited MW into deliverable operating headroom.}
+\label{fig:uevf-interface}
+\end{figure}
+
 \section{Definitions, Notation, and Stylized Example}
 
 \subsection{Key definitions}
@@ -320,36 +346,60 @@ fragments of the portfolio's potential $A$ as operationally countable $H$.
 
 \section{Cross-ISO Constructs for Accreditation and Deliverability}
 
-This section compares how peers translate accredited capability into deliverable, enforceable RA headroom.
-The key question is: \emph{how does each ISO define and police $D$ (deliverability) for purposes of counting or
-monetizing $H=\min(A,D)$?}
+This section compares how peers translate accredited capability into deliverable, enforceable RA headroom. The key question is: \emph{how does each ISO define and police $D$ (deliverability) for purposes of counting or monetizing $H=\min(A,D)$?}
+
+\vspace{1em}
+
+% Define a custom column type 'L' that is a flexible X column but Left-Aligned (Ragged Right)
+\newcolumntype{L}{>{\raggedright\arraybackslash}X}
+
+\begin{table}[htbp]
+\centering
+\small
+\renewcommand{\arraystretch}{1.4} % Increases row height for readability
+\rowcolors{2}{white}{techgray!40} % Alternating row colors (requires [table]{xcolor})
+
+\caption{Scorecard: Accreditation, Deliverability Gating, and POI Portfolio Support}
+\label{tab:iso_scorecard}
+
+\begin{tabularx}{\linewidth}{@{} l L L L L @{}}
+\toprule
+\textbf{ISO} & \textbf{Accreditation} & \textbf{Deliverability Gating for RA} & \textbf{Co-located Ownership \& Scheduling at POI} & \textbf{Maturity} \\
+\midrule
+
+\textbf{PJM} & 
+ELCC for variable; storage rules by duration & 
+Capacity eligibility binds to CIR quantity; deliverability tested & 
+Combined/separate registration with allocable CIRs; SC-mediated scheduling & 
+High \\
+
+\textbf{MISO} & 
+Evolving ELCC/UCAP (ZRCs); storage rules in flight & 
+NRIS deliverability required; portfolio allocation not standardized & 
+Separate ownership/dispatch rights unresolved; eligibility haircuts common & 
+Medium--Low \\
+
+\textbf{CAISO} & 
+NQC via ELCC for solar/wind/storage/hybrids & 
+Deliverability allocations (FCDS/EODS) gate NQC countability & 
+Clear hybrid vs. co-located constructs; SC manages portfolio within allocations & 
+Medium--High \\
+
+\textbf{ERCOT} & 
+No capacity market; contributions show via energy/AS & 
+No RA deliverability gate; constraints monetize through LMP/ORDC risk & 
+Co-located registration supported; economics via LMP/AS rather than RA & 
+Medium \newline \scriptsize{(Different Paradigm)} \\
+
+\bottomrule
+\end{tabularx}
+\end{table}
 
 \vspace{0.5em}
-\noindent\textbf{Scorecard (abbreviated).} Accreditation, deliverability gating, and POI portfolio support.
 
-\begin{center}
-\small
-\resizebox{\linewidth}{!}{%
-\begin{tabular}{|l|l|l|l|l|}
-\hline
-ISO & Accreditation & Deliverability gating for RA & Co-located ownership/scheduling at POI & Maturity \\
-\hline
-PJM & ELCC for variable; storage rules by duration & Capacity eligibility binds to CIR quantity; deliverability tested & Combined/separate registration with allocable CIRs; SC-mediated scheduling & High \\
-\hline
-MISO & Evolving ELCC/UCAP (ZRCs); storage rules in flight & NRIS deliverability required; portfolio allocation not standardized & Separate ownership/dispatch rights unresolved; eligibility haircuts common & Medium--Low \\
-\hline
-CAISO & NQC via ELCC for solar/wind/storage/hybrids & Deliverability allocations (FCDS/EODS) gate NQC countability & Clear hybrid vs. co-located constructs; SC manages portfolio within allocations & Medium--High \\
-\hline
-ERCOT & No capacity market; contributions show via energy/AS & No RA deliverability gate; constraints monetize through LMP/ORDC risk & Co-located registration supported; economics via LMP/AS rather than RA & Medium (different paradigm) \\
-\hline
-\end{tabular}%
-}
-\end{center}
+\noindent\textbf{Interpretation.} PJM and CAISO most explicitly bind eligibility to deliverability rights. ERCOT monetizes deliverability mainly through energy and ancillary service risk rather than a capacity eligibility gate. MISO is most exposed to the co-location seam because accredited capability can exist without a standardized, portfolio-aware deliverability budget and scheduling authority at the POI.
 
-\noindent\textbf{Interpretation.} PJM and CAISO most explicitly bind eligibility to deliverability rights. ERCOT monetizes
-deliverability mainly through energy and ancillary service risk rather than a capacity eligibility gate. MISO is
-most exposed to the co-location seam because accredited capability can exist without a standardized,
-portfolio-aware deliverability budget and scheduling authority at the POI.
+\newpage
 
 \section{Gap Analysis for MISO}
 
@@ -1554,6 +1604,16 @@ A POI is ``portfolio-ready'' if:
 
 \bibitem{ERCOT_Planning_Guide_pdf}
 \textit{ERCOT Planning Guide.pdf}. Planning criteria and ORDC/scarcity pricing framework.
+
+
+\bibitem{ref:uevf}
+\textit{00 - UEVF.pdf}. Internal working paper. Unified Energy Valuation Framework (UEVF) and ASCDE
+definitions; module decomposition (Dispatch, Fuel Supply, Storage, Transmission, Reliability, Market Value).
+
+\bibitem{ref:eras-uevf-ascde}
+Justin Candler \& Uriel. ``A Comprehensive UEVF/ASCDE Assessment of MISO's ERAS Tranches: Monte Carlo
+Scoring with Empirical RT Uplift, Ancillary Services, Seasonal ELCC, PRA Monetization, and Upgrade-Tail Risk.''
+Aug.\ 27, 2025. In: \textit{00 - Technical Papers.pdf} (internal compilation).
 
 \bigskip
 \noindent\textbf{Companion work.} A full-stack implementation of UEVF/ASCDE applied to MISO's ERAS tranches
