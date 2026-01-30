@@ -50,7 +50,7 @@
 % Running header
 \pagestyle{fancy}
 \fancyhf{}
-\lhead{Planning Reserves to Usable Headroom}
+\lhead{Modernizing MISO Deliverability}
 \rhead{TP-006}
 \cfoot{\thepage}
 \renewcommand{\headrulewidth}{0.4pt}
@@ -91,8 +91,7 @@
 
 \begin{document}
 
-\title{From Planning Reserves to Usable Headroom:\\
-Accreditation $\times$ Deliverability in MISO and Peers, and Why Co-Located Resources Still Clear at a Discount}
+\title{Modernizing MISO Deliverability: Benchmarking Hybrid Accreditation Against PJM and CAISO}
 \author{Prepared by: Justin Candler \& Uriel}
 \date{August 22, 2025}
 
@@ -124,7 +123,9 @@ to convert accredited MW into usable headroom without compromising reliability o
   \item RA = tomorrow's operating headroom. Planning reserves are not abstract; they are the expected
   supply of real-time operating reserves and dispatchable energy in the hours that dominate LOLE.
   \item Two legs, one product. Accreditation (can it produce?) $\times$ Deliverability (can we move it?) $\Rightarrow$ usable
-  headroom. Either leg missing $\Rightarrow$ ``paper MW''.
+  headroom. Either leg missing $\Rightarrow$ ``paper MW''.\footnote{In UEVF terms, ``paper MW'' typically reflects an accreditation quantity (Reliability Module) that is not
+paired with the binding network feasibility/rights (Transmission Module). The orthogonality discipline is the
+point: if deliverability is not explicitly specified, it is being implicitly assumed. See: \emph{00 - UEVF.pdf}.}
   \item Co-located portfolios are penalized in MISO because deliverability and scheduling constructs at
   the POI are not yet standardized, especially for separate ownership. Portfolio physics exist; portfolio
   rights do not.
@@ -281,6 +282,20 @@ as a \emph{unit-bound} right rather than a \emph{POI/portfolio budget}, then the
 portfolio physics into $H=\min(A,D)$ at the times that dominate LOLE. That is the seam: portfolio value exists
 in dispatch; portfolio rights often do not exist in eligibility, scheduling authority, and auditable performance
 accountability.
+
+\subsection{Relationship to UEVF/ASCDE: why this paper isolates a single missing interface}
+This paper should be read as a targeted sub-result within the Unified Energy Valuation Framework (UEVF).
+UEVF decomposes project value into orthogonal modules, including a \emph{Reliability Module} (adequacy and
+accreditation via ELCC/UCAP/NQC) and a \emph{Transmission Module} (the cost and feasibility of delivering that
+capability to binding load under security constraints).\footnote{UEVF defines ASCDE as an all-in, system-adjusted
+cost per delivered MWh that starts from base costs (LCOE-like) and then adds/subtracts non-overlapping module
+adders/credits, including reliability and transmission effects. The module structure is designed to be largely
+orthogonal to minimize double counting and to force explicit attribution of constraints. See: \emph{00 - UEVF.pdf}.}
+
+TP-006 isolates the \emph{interface operator} between these modules: converting accredited capability into
+\emph{usable operating headroom} requires explicit deliverability rights at the POI that can be allocated in a way
+that matches portfolio physics. When rights remain unit-bound while physics is portfolio-bound, the market
+produces ``paper MW''—accredited in planning constructs but not reliably producible at the constrained nodes.
 
 \section{Definitions, Notation, and Stylized Example}
 
@@ -1539,6 +1554,12 @@ A POI is ``portfolio-ready'' if:
 
 \bibitem{ERCOT_Planning_Guide_pdf}
 \textit{ERCOT Planning Guide.pdf}. Planning criteria and ORDC/scarcity pricing framework.
+
+\bigskip
+\noindent\textbf{Companion work.} A full-stack implementation of UEVF/ASCDE applied to MISO's ERAS tranches
+(including seasonal ELCC, PRA monetization, and upgrade-tail risk) appears in the technical-papers stack and
+provides broader context for the interface problem formalized here.\footnote{See: \emph{00 - Technical Papers.pdf},
+``A Comprehensive UEVF/ASCDE Assessment of MISO's ERAS Tranches'' (Aug. 27, 2025).}
 
 \end{thebibliography}
 
